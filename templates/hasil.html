@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html style="height:100%">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@700&display=swap" rel="stylesheet">
+    <script src="main.js"></script>
+</head>
+
+<body style="background-color:#353f4b;padding:0;margin:0;height:100%">
+    <div style="display:flex;flex-direction:column;height:100%">
+        <div style="padding:80px 0px 0px 0px;height:100px;display:flex;justify-content:center;align-items:center">
+            <div style="background-color:#596978;padding:20px;padding-left:35px;width:600px;color:white;font-size:2.3em;font-family: 'PT Sans Caption', sans-serif;text-align:center">HASIL DIAGNOSIS</div>
+        </div>
+        <div style="height:100%;display:flex;justify-content:center;align-items:center;flex-direction:column;padding-bottom:50px">
+            <div style="margin-bottom:35px">
+                <image style="width:300px;height:300px" id="gambarplaceholder" src="data:image/jpeg;base64,{{gambar}}"></image>
+            </div>
+            <div style="    color: white;
+            font-size: 2.3em;
+            font-family: 'PT Sans Caption', sans-serif;margin-bottom:40px;text-align:center">Gambar CT-Scan Terdeteksi Sebagai :</div>
+            <div style="display:flex;flex-direction:row">
+                {%if hasil=='0'%}
+                <div id="tombolKirim" style="padding:15px;background-color:#a2a2a2;color:white;margin-bottom:50px;font-family: 'PT Sans Caption', sans-serif;">COVID-19</div>
+                <div id="tombolKirim" style="padding:15px;background-color:#596979;color:white;margin-bottom:50px;font-family: 'PT Sans Caption', sans-serif;">NORMAL</div>
+                <div id="tombolKirim" style="padding:15px;background-color:#596979;color:white;margin-bottom:50px;font-family: 'PT Sans Caption', sans-serif;">PNEUNOMIA</div>
+                {%elif hasil=='1'%}
+                <div id="tombolKirim" style="padding:15px;background-color:#596979;color:white;margin-bottom:50px;font-family: 'PT Sans Caption', sans-serif;">COVID-19</div>
+                <div id="tombolKirim" style="padding:15px;background-color:#a2a2a2;color:white;margin-bottom:50px;font-family: 'PT Sans Caption', sans-serif;">NORMAL</div>
+                <div id="tombolKirim" style="padding:15px;background-color:#596979;color:white;margin-bottom:50px;font-family: 'PT Sans Caption', sans-serif;">PNEUNOMIA</div>
+                {%elif hasil=='2'%}
+                <div id="tombolKirim" style="padding:15px;background-color:#596979;color:white;margin-bottom:50px;font-family: 'PT Sans Caption', sans-serif;">COVID-19</div>
+                <div id="tombolKirim" style="padding:15px;background-color:#596979;color:white;margin-bottom:50px;font-family: 'PT Sans Caption', sans-serif;">NORMAL</div>
+                <div id="tombolKirim" style="padding:15px;background-color:#a2a2a2;color:white;margin-bottom:50px;font-family: 'PT Sans Caption', sans-serif;">PNEUNOMIA</div>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+    <form action="proses" method="POST" enctype="multipart/form-data" style="display:none">
+        <input name="file" type="file" id="gambarCT" style="display:none">
+        <input type="submit" id="kirimGambar">
+    </form>
+
+</body>
+<script>
+    let filegambar = document.querySelector("#gambarCT");
+
+    document.querySelectorAll("#tombolUploadGambar")[0].addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelector("#gambarCT").click();
+    })
+
+    document.querySelectorAll("#tombolKirim")[0].addEventListener("click", () => {
+        if (filegambar.files.length === 0) {
+            alert("Masukkan data gambar!");
+        } else {
+            document.querySelectorAll("#kirimGambar")[0].click();
+        }
+    })
+
+    filegambar.addEventListener("change", () => {
+        if (filegambar.files.length > 0 && filegambar.files[0].type.match(/image/)) {
+            let image = filegambar.files[0];
+            let obj = URL.createObjectURL(image);
+            document.querySelector("#gambarplaceholder").src = obj;
+        } else {
+            filegambar.value = "";
+            document.querySelector("#gambarplaceholder").src = "https://icon-library.com/images/photo-placeholder-icon/photo-placeholder-icon-7.jpg";
+        }
+    })
+</script>
+
+</html>

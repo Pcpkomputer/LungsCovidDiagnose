@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html style="height:100%">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@700&display=swap" rel="stylesheet">
+    <script src="main.js"></script>
+</head>
+
+<body style="background-color:#353f4b;padding:0;margin:0;height:100%">
+    <div style="display:flex;flex-direction:column;height:100%">
+        <div style="padding:30px 0px 30px 0px;height:100px">
+            <div style="background-color:#596978;padding:20px;padding-left:35px;width:600px;color:white;font-size:2.3em;font-family: 'PT Sans Caption', sans-serif;">LungsCovidDiagnose</div>
+        </div>
+        <div style="height:100%;display:flex;justify-content:center;align-items:center;flex-direction:column">
+            <div style="color:white;font-size:2.3em;font-family: 'PT Sans Caption', sans-serif;margin-bottom:50px;text-align:center">Diagnosis Paru-Paru Menggunakan CT-Scan</div>
+            <div style="margin-bottom:35px">
+                <image style="width:300px;height:300px" id="gambarplaceholder" src="https://icon-library.com/images/photo-placeholder-icon/photo-placeholder-icon-7.jpg"></image>
+            </div>
+            <div id="tombolUploadGambar" style="padding:10px;background-color:#596979;color:white;margin-bottom:50px;cursor:pointer;font-family: 'PT Sans Caption', sans-serif;">Upload Gambar</div>
+            <div id="tombolKirim" style="padding:15px;background-color:#596979;color:white;margin-bottom:50px;cursor:pointer;font-family: 'PT Sans Caption', sans-serif;">PROSES</div>
+        </div>
+    </div>
+    <form action="proses" method="POST" enctype="multipart/form-data" style="display:none">
+        <input name="file" type="file" id="gambarCT" style="display:none">
+        <input type="submit" id="kirimGambar">
+    </form>
+
+</body>
+<script>
+    {%if error %}
+    alert("Gambar yang diunggah tidak valid (resolusi kurang, kecerahan kurang, posisi CT salah)")
+    {% endif %}
+
+    let filegambar = document.querySelector("#gambarCT");
+
+    document.querySelectorAll("#tombolUploadGambar")[0].addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelector("#gambarCT").click();
+    })
+
+    document.querySelectorAll("#tombolKirim")[0].addEventListener("click", () => {
+        if (filegambar.files.length === 0) {
+            alert("Masukkan data gambar!");
+        } else {
+            document.querySelectorAll("#kirimGambar")[0].click();
+        }
+    })
+
+    filegambar.addEventListener("change", () => {
+        if (filegambar.files.length > 0 && filegambar.files[0].type.match(/image/)) {
+            let image = filegambar.files[0];
+            let obj = URL.createObjectURL(image);
+            document.querySelector("#gambarplaceholder").src = obj;
+        } else {
+            filegambar.value = "";
+            document.querySelector("#gambarplaceholder").src = "https://icon-library.com/images/photo-placeholder-icon/photo-placeholder-icon-7.jpg";
+        }
+    })
+</script>
+
+</html>
